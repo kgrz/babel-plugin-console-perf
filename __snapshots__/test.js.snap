@@ -19,6 +19,126 @@ const a = () => {
 };"
 `;
 
+exports[`does not add profile statement if one is already present 1`] = `
+"
+const b = () => {
+	console.profile('b');
+
+	// profile
+
+	console.profile('some name');
+	console.profileEnd();
+	return 42;
+	console.profileEnd();
+};"
+`;
+
+exports[`has multiple comments 1`] = `
+"
+const b = () => {
+	console.profile(\\"b\\");
+	console.profileEnd();
+
+	// profile
+	// profile
+	// profile
+	// profile
+	// profile
+
+	return 42;
+};"
+`;
+
+exports[`has multiple comments 2`] = `
+"
+const b = () => {
+	console.profile(\\"b\\");
+	console.profileEnd();
+
+	// profile
+	//
+	// profile
+	//
+	return 42;
+	// profile
+	//
+	// profile
+};"
+`;
+
+exports[`has multiple returns, one of them invalid 1`] = `
+"
+const b = () => {
+	console.profile(\\"b\\");
+	console.profileEnd();
+
+	// profile
+
+	return 42;
+	console.profileEnd();
+	return 42;
+	console.profileEnd();
+	return 42;
+};"
+`;
+
+exports[`maintains indentation when used with iterators 1`] = `
+"
+const b = () => {
+	console.profile(\\"b\\");
+
+	[1, 3, 5].map(item => {
+		console.profileEnd();
+
+		return item;
+	});
+
+	// profile
+	console.profileEnd();
+	return 42;
+};"
+`;
+
+exports[`maintains indentation with nested functions 1`] = `
+"
+const b = () => {
+	console.profile(\\"b\\");
+
+	const a = () => {
+		_babel_temp_alias = Math.sqrt(1000000000000);
+		console.profileEnd();
+
+		return _babel_temp_alias;
+	};
+
+	// profile
+	console.profileEnd();
+	return 42;
+};"
+`;
+
+exports[`maintains indentation with nested functions 2`] = `
+"
+const b = () => {
+	console.profile(\\"b\\");
+
+	const a = () => {
+		console.profile(\\"a\\");
+		_babel_temp_alias = Math.sqrt(1000000000000);
+		console.profileEnd();
+		console.profileEnd();
+
+		// profile
+		return _babel_temp_alias;
+	};
+
+	// profile
+	_babel_temp_alias = a();
+	console.profileEnd();
+	return _babel_temp_alias;
+};"
+`;
+
 exports[`wraps a function in profile block 1`] = `
 "
 const b = () => {
