@@ -12,6 +12,7 @@ it('wraps a function in profile block', () => {
 	}
 
 	const a = () => {
+		// profile
 		return b();
 	}
 	`;

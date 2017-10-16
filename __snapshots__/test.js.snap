@@ -11,6 +11,11 @@ const b = () => {
 };
 
 const a = () => {
-	return b();
+	console.profile(\\"a\\");
+	_babel_temp_alias = b();
+	console.profileEnd();
+
+	// profile
+	return _babel_temp_alias;
 };"
 `;

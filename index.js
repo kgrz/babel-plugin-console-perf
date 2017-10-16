@@ -28,14 +28,15 @@ const BlockVisitor = function (path, args) {
 	}
 }
 
-
-const generateProfileStart = functionLabel =>
-		t.expressionStatement(
-				t.callExpression(
-						t.memberExpression(t.identifier('console'), t.identifier('profile')),
-						[ t.stringLiteral(functionLabel) ]
-				)
-		);
+const generateProfileStart = functionLabel => {
+	const args = functionLabel ? [ t.stringLiteral(functionLabel) ] : [];
+	return t.expressionStatement(
+		t.callExpression(
+			t.memberExpression(t.identifier('console'), t.identifier('profile')),
+			args
+		)
+	);
+}
 
 const generateProfileEnd = () =>
 		t.expressionStatement(
@@ -45,12 +46,43 @@ const generateProfileEnd = () =>
 				)
 		);
 
+const generateIdentifier = () => t.identifier('_babel_temp_alias');
+
+const assignArgument = (identifier, argument) =>
+	t.expressionStatement(
+		t.assignmentExpression(
+			"=",
+			t.identifier('_babel_temp_alias'),
+			argument
+		)
+	);
+
 const ReturnVisitor = {
 	ReturnStatement: function (path, args) {
+		const argument = path.node.argument;
+
 		if (args.state.gotProfileComment) {
-			path.insertBefore(generateProfileEnd());
+			args.state.gotReturn = true;
+
+			if (!argument || argument.type === 'Literal' || argument.type === 'NumericLiteral' || argument.type === 'StringLiteral' || argument.type === 'Identifier') {
+				// This is the simplest possible case. We don't need to alias anything
+				path.insertBefore(generateProfileEnd());
+
+				return;
+			} else {
+				// assign the argument to some variable
+				// add profile end statement
+				// set the argument of return to the variable identifier
+
+				const identifier = generateIdentifier();
+				const assignment = assignArgument(identifier, argument);
+				path.insertBefore(assignment);
+				path.insertBefore(generateProfileEnd());
+				path.node.argument = identifier;
+
+				return;
+			}
 		}
-		args.state.gotReturn = true;
 	}
 }
 
