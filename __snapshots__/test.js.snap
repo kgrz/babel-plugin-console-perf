@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`wraps a function in profile block 1`] = `
+"
+const b = () => {
+	console.profile(\\"b\\");
+	console.profileEnd();
+
+	// profile
+	return 42;
+};
+
+const a = () => {
+	return b();
+};"
+`;
