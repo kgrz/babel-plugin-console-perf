@@ -61,9 +61,9 @@ const ReturnVisitor = {
 	ReturnStatement: function (path, args) {
 		const argument = path.node.argument;
 
-		if (args.state.gotProfileComment) {
-			args.state.gotReturn = true;
+		args.state.gotReturn = true;
 
+		if (args.state.gotProfileComment) {
 			if (!argument || argument.type === 'Literal' || argument.type === 'NumericLiteral' || argument.type === 'StringLiteral' || argument.type === 'Identifier') {
 				// This is the simplest possible case. We don't need to alias anything
 				path.insertBefore(generateProfileEnd());

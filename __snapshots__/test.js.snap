@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`caters to the case of multiple returns 1`] = `
+"
+const a = () => {
+	console.profile(\\"a\\");
+
+	// profile
+	if (true) {
+		_babel_temp_alias = Math.random(12);
+		console.profileEnd();
+
+		return _babel_temp_alias;
+	}
+
+	_babel_temp_alias = Math.sqrt(10000000000000000000);
+	console.profileEnd();
+	return _babel_temp_alias;
+};"
+`;
+
 exports[`wraps a function in profile block 1`] = `
 "
 const b = () => {
