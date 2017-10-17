@@ -2,32 +2,38 @@ babel-plugin-console-perf
 =========================
 
 
-A babel plugin to assist in improving JS code performance. I got this
-idea when browsing documentation on various `console` methods, and
-discovered that there's a `console.profile` function that automatically
-starts and stops the JavaScript profiler for a particular region inside
-the function. I wanted to make this as seamless as possible.
-
+A babel plugin to simplifies the usage of profiling in JS functions. I
+got this idea when browsing documentation on various `console` methods,
+and discovered that there's a `console.profile/profileEnd` function that
+automatically starts and stops the JavaScript profiler for a particular
+region inside the function. I wanted to make this as seamless as
+possible.
 
 **Note: Alpha quality program. Use with caution, and _never_ use this
 to production**
 
 
-How this works
---------------
+Usage
+-----
 
-This plugin looks for the comment `// profile`, maps out the function
-region and does a couple of things:
 
-1. adds a `console.profile(<function identifier>)` method to the start of the function
-2. adds a `console.profileEnd()` right before the end of the function
+1. Install the plugin using `npm install --save-dev babel-plugin-console-perf`
+2. Add the plugin `console-perf` to your `.babelrc`
+3. Add a comment `// profile` in the function you want to profile
+4. Open the JS console in your browser, and navigate to the profiling
+   tab. Note that on latest Chrome (Canary is what I generally use) the
+   tool has been moved into the "more tools" section. This is not the
+   Performance tab, by the way.
+5. Load the page which calls the function where you added comment.
+
+
+That should record individual profiles for each of the runs in case the
+function gets called multiple times.
 
 If there are `return` statements, it checks to see if there are
 statements/expressions there, and then re-assigns them to variables and
 returns the variable instead. This ensures that the
 statements/expressions are also profiled. For instance:
-
-
 ```javascript
 
 function getHash () {
@@ -40,7 +46,6 @@ function getHash () {
 ```
 
 gets converted to:
-
 
 ```javascript
 
@@ -68,3 +73,13 @@ function getHash () {
 ```
 
 which misses out on profiling a potentially CPU-heavy function.
+
+
+----------------
+
+
+Checkout other `console`-based plugins that I wrote:
+
+[babel-plugin-console-groupify](https://github.com/kgrz/babel-plugin-console-groupify)
+
+[babel-plugin-transform-console-log-variable-names](https://github.com/kgrz/babel-plugin-transform-console-log-variable-names)
