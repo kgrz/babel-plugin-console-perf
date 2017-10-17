@@ -88,8 +88,6 @@ const b = () => {
 	console.profile(\\"b\\");
 
 	[1, 3, 5].map(item => {
-		console.profileEnd();
-
 		return item;
 	});
 
@@ -105,10 +103,7 @@ const b = () => {
 	console.profile(\\"b\\");
 
 	const a = () => {
-		_babel_temp_alias = Math.sqrt(1000000000000);
-		console.profileEnd();
-
-		return _babel_temp_alias;
+		return Math.sqrt(1000000000000);
 	};
 
 	// profile
@@ -125,7 +120,6 @@ const b = () => {
 	const a = () => {
 		console.profile(\\"a\\");
 		_babel_temp_alias = Math.sqrt(1000000000000);
-		console.profileEnd();
 		console.profileEnd();
 
 		// profile
