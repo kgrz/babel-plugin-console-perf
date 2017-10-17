@@ -7,7 +7,8 @@ const a = () => {
 
 	// profile
 	if (true) {
-		_babel_temp_alias = Math.random(12);
+		let _babel_temp_alias = Math.random(12);
+
 		console.profileEnd();
 
 		return _babel_temp_alias;
@@ -158,7 +159,9 @@ const b = () => {
 
 	const a = () => {
 		console.profile(\\"a\\");
-		_babel_temp_alias = Math.sqrt(1000000000000);
+
+		let _babel_temp_alias = Math.sqrt(1000000000000);
+
 		console.profileEnd();
 
 		// profile
@@ -166,10 +169,34 @@ const b = () => {
 	};
 
 	// profile
-	_babel_temp_alias = a();
+
+	let _babel_temp_alias = a();
+
 	console.profileEnd();
 	return _babel_temp_alias;
 };"
+`;
+
+exports[`usage inside classes works inside function properties 1`] = `
+"
+class A {
+	changeVisualState(id) {
+		console.profile(\\"changeVisualState\\");
+
+		let _babel_temp_alias = item => {
+			this.setState({
+				newState: {}
+			});
+			callSomeMethod();
+			console.profileEnd();
+		};
+
+		console.profileEnd();
+
+		// profile
+		return _babel_temp_alias;
+	}
+}"
 `;
 
 exports[`wraps a function in profile block 1`] = `
@@ -184,7 +211,9 @@ const b = () => {
 
 const a = () => {
 	console.profile(\\"a\\");
-	_babel_temp_alias = b();
+
+	let _babel_temp_alias = b();
+
 	console.profileEnd();
 
 	// profile

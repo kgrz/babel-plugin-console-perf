@@ -48,14 +48,27 @@ const generateProfileEnd = () =>
 
 const generateIdentifier = () => t.identifier('_babel_temp_alias');
 
-const assignArgument = (identifier, argument) =>
-	t.expressionStatement(
-		t.assignmentExpression(
-			"=",
-			t.identifier('_babel_temp_alias'),
-			argument
-		)
-	);
+const assignArgument = (identifier, argument, opts) => {
+	if (opts.blockDepth === 1) {
+		return t.variableDeclaration(
+			'let',
+			[
+				t.variableDeclarator(
+					t.identifier('_babel_temp_alias'),
+					argument
+				)
+			]
+		);
+	} else {
+		return t.expressionStatement(
+			t.assignmentExpression(
+				"=",
+				t.identifier('_babel_temp_alias'),
+				argument
+			)
+		);
+	}
+}
 
 
 const SkipVisitor = function (path, args) {
@@ -68,6 +81,7 @@ const ReturnVisitor = {
 		const argument = path.node.argument;
 
 		args.state.gotReturn = true;
+		args.state.blockDepth++;
 
 		if (args.state.gotProfileComment) {
 			if (!argument || argument.type === 'Literal' || argument.type === 'NumericLiteral' || argument.type === 'StringLiteral' || argument.type === 'Identifier') {
@@ -81,7 +95,9 @@ const ReturnVisitor = {
 				// set the argument of return to the variable identifier
 
 				const identifier = generateIdentifier();
-				const assignment = assignArgument(identifier, argument);
+				const assignment = assignArgument(identifier, argument, {
+					blockDepth: args.state.blockDepth
+				});
 				path.insertBefore(assignment);
 				path.insertBefore(generateProfileEnd());
 				path.node.argument = identifier;
@@ -139,7 +155,8 @@ const ConsoleProfileVisitor = function (babel) {
 			BlockStatement: function (path, args) {
 				let state = {
 					gotProfileComment: false,
-					gotReturn: false
+					gotReturn: false,
+					blockDepth: 0
 				};
 
 				BlockVisitor(path, { state });

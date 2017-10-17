@@ -170,3 +170,25 @@ it('maintains indentation when for if blocks', () => {
 	expect(code).toMatchSnapshot();
 });
 
+
+describe('usage inside classes', () => {
+	it('works inside function properties', () => {
+		const example = `
+		class A {
+			changeVisualState (id) {
+				// profile
+				return item => {
+					this.setState({
+						newState: {}
+					});
+					callSomeMethod();
+				};
+			}
+		}
+		`;
+
+		const code = babel.transform(example, { plugins: [ plugin ] }).code;
+		expect(code).toMatchSnapshot();
+	});
+});
+
