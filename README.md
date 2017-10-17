@@ -3,10 +3,14 @@ babel-plugin-console-perf
 
 
 A babel plugin to assist in improving JS code performance. I got this
-idea when browing documentation on various `console` methods, and
+idea when browsing documentation on various `console` methods, and
 discovered that there's a `console.profile` function that automatically
 starts and stops the JavaScript profiler for a particular region inside
 the function. I wanted to make this as seamless as possible.
+
+
+**Note: Alpha quality program. Use with caution, and _never_ use this
+to production**
 
 
 How this works
