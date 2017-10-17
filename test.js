@@ -45,7 +45,99 @@ it('does not add profile statement if one is already present', () => {
 		return 42;
 		console.profileEnd();
 	}`;
-	
+
+	const code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
 });
 
+it('has multiple returns, one of them invalid', () => {
+	const example = `
+	const b = () => {
+		// profile
+
+		return 42;
+		return 42;
+		return 42;
+	}`;
+
+	const code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+});
+
+
+it('has multiple comments', () => {
+	let example = `
+	const b = () => {
+		// profile
+		// profile
+		// profile
+		// profile
+		// profile
+
+		return 42;
+	}`;
+
+	let code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+
+	example = `
+	const b = () => {
+		// profile
+		//
+		// profile
+		//
+		return 42;
+		// profile
+		//
+		// profile
+
+	}`;
+
+	code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+});
+
+it('maintains indentation with nested functions', () => {
+	let example = `
+	const b = () => {
+		const a = () => {
+			return Math.sqrt(1000000000000);
+		}
+
+		// profile
+		return 42;
+	}`;
+
+	let code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+
+	example = `
+	const b = () => {
+		const a = () => {
+			// profile
+			return Math.sqrt(1000000000000);
+		}
+
+		// profile
+		return a();
+	}`;
+
+	code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+});
+
+it('maintains indentation when used with iterators', () => {
+	const example = `
+	const b = () => {
+		[1, 3, 5].map(item => {
+			return item;
+		})
+
+		// profile
+		return 42;
+	}`;
+
+	const code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+});
 

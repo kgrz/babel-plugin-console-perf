@@ -57,6 +57,12 @@ const assignArgument = (identifier, argument) =>
 		)
 	);
 
+
+const SkipVisitor = function (path, args) {
+	path.skip();
+	return;
+}
+
 const ReturnVisitor = {
 	ReturnStatement: function (path, args) {
 		const argument = path.node.argument;
@@ -83,7 +89,11 @@ const ReturnVisitor = {
 				return;
 			}
 		}
-	}
+	},
+	FunctionDeclaration: SkipVisitor,
+	ArrowFunctionExpression: SkipVisitor,
+	ClassMethod: SkipVisitor,
+	FunctionExpression: SkipVisitor
 }
 
 const isPathTypeAFunction = p =>
