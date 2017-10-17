@@ -82,6 +82,45 @@ const b = () => {
 };"
 `;
 
+exports[`maintains indentation when for if blocks 1`] = `
+"
+const b = () => {
+	console.profile('b');
+
+	// profile
+
+	if (true) {
+		console.profileEnd();
+
+		return 12;
+	}
+
+	switch (true) {
+		case 'case1':
+			console.profileEnd();
+
+			return 'what';
+		case 'case 2':
+			{
+				console.profileEnd();
+
+				return 'where';
+			}
+		case 'case 3':
+			console.profileEnd();
+
+			return 'who';
+		default:
+			console.profileEnd();
+
+			return 'default';
+	}
+
+	console.profileEnd();
+	return 42;
+};"
+`;
+
 exports[`maintains indentation when used with iterators 1`] = `
 "
 const b = () => {

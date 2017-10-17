@@ -141,3 +141,32 @@ it('maintains indentation when used with iterators', () => {
 	expect(code).toMatchSnapshot();
 });
 
+it('maintains indentation when for if blocks', () => {
+	const example = `
+	const b = () => {
+		// profile
+		
+		if (true) {
+			return 12;
+		}
+
+		switch (true) {
+			case 'case1':
+				return 'what';
+			case 'case 2': {
+				return 'where';
+			}
+			case 'case 3':
+				return 'who';
+			default:
+				return 'default'
+		}
+
+		return 42;
+	};
+	`;
+
+	const code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+});
+
