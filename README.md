@@ -26,9 +26,13 @@ Usage
    Performance tab, by the way.
 5. Load the page which calls the function where you added comment.
 
-
 That should record individual profiles for each of the runs in case the
 function gets called multiple times.
+
+Here's a video of the usage in action: [console-perf-demo](https://www.dropbox.com/s/3o02rkyhzmx6pfz/console-perf-demo-complete.mov?dl=0)
+
+
+Will try to put up a GIF as and when I get a chance.
 
 If there are `return` statements, it checks to see if there are
 statements/expressions there, and then re-assigns them to variables and
