@@ -34,6 +34,19 @@ const b = () => {
 };"
 `;
 
+exports[`does not wrap a function if comment does not exactly match 1`] = `
+"
+const b = () => {
+	// wraps a profile
+	return 42;
+};
+
+const a = () => {
+	// bug in something else called profile
+	return b();
+};"
+`;
+
 exports[`has multiple comments 1`] = `
 "
 const b = () => {

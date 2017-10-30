@@ -1,5 +1,7 @@
 const t = require('babel-types');
 
+const SPACE_REGEX = /\s+/;
+
 const BlockVisitor = function (path, args) {
 	const body = path.node.body || [];
 
@@ -16,9 +18,14 @@ const BlockVisitor = function (path, args) {
 				for (var j = 0, length = allComments.length; j < length; j++) {
 					const cNode = allComments[j];
 
-					if (cNode.type === 'CommentLine' && (cNode.value || '').indexOf('profile') > -1) {
-						args.state.gotProfileComment = true;
-						args.state.path = path;
+					if (cNode.type === 'CommentLine') {
+						const value = (cNode.value || '').replace(SPACE_REGEX, '');
+
+						if (value === 'profile') {
+							args.state.gotProfileComment = true;
+							args.state.path = path;
+						}
+
 						return;
 					}
 				}

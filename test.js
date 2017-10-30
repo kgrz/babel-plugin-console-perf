@@ -21,6 +21,23 @@ it('wraps a function in profile block', () => {
 	expect(code).toMatchSnapshot();
 });
 
+it('does not wrap a function if comment does not exactly match', () => {
+	const example = `
+	const b = () => {
+		// wraps a profile
+		return 42;
+	}
+
+	const a = () => {
+		// bug in something else called profile
+		return b();
+	}
+	`;
+
+	const code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+});
+
 it('caters to the case of multiple returns', () => {
 	const example = `
 	const a = () => {
