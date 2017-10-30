@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-console-perf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A plugin that makes it easy to profile functions using console.profile and console.time functions",
   "main": "index.js",
   "author": "Kashyap Kondamudi",
