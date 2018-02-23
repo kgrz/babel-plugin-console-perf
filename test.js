@@ -187,6 +187,34 @@ it('maintains indentation when for if blocks', () => {
 	expect(code).toMatchSnapshot();
 });
 
+fit('usage inside if conditions', () => {
+	const example = `
+	const b = () => {
+		if (true) {
+			// profile
+		
+			return 12;
+		}
+
+		switch (true) {
+			case 'case1':
+				return 'what';
+			case 'case 2': {
+				return 'where';
+			}
+			case 'case 3':
+				return 'who';
+			default:
+				return 'default'
+		}
+
+		return 42;
+	};
+	`;
+
+	const code = babel.transform(example, { plugins: [ plugin ] }).code;
+	expect(code).toMatchSnapshot();
+});
 
 describe('usage inside classes', () => {
 	it('works inside function properties', () => {

@@ -162,6 +162,7 @@ const ConsoleProfileVisitor = function (babel) {
 			BlockStatement: function (path, args) {
 				let state = {
 					gotProfileComment: false,
+					addedProfileComment: false,
 					gotReturn: false,
 					blockDepth: 0
 				};
@@ -173,11 +174,13 @@ const ConsoleProfileVisitor = function (babel) {
 						'body',
 						generateProfileStart(getName(path))
 					);
+
+					state.addedProfileComment = true;
 				}
 
 				path.traverse(ReturnVisitor, { state });
 
-				if (!state.gotReturn) {
+				if (state.addedProfileComment && !state.gotReturn) {
 					path.pushContainer('body', generateProfileEnd());
 				}
 			}

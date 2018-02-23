@@ -201,7 +201,6 @@ class A {
 				newState: {}
 			});
 			callSomeMethod();
-			console.profileEnd();
 		};
 
 		console.profileEnd();
@@ -210,6 +209,35 @@ class A {
 		return _babel_temp_alias;
 	}
 }"
+`;
+
+exports[`usage inside if conditions 1`] = `
+"
+const b = () => {
+	if (true) {
+		console.profile('b');
+		console.profileEnd();
+
+		// profile
+
+		return 12;
+	}
+
+	switch (true) {
+		case 'case1':
+			return 'what';
+		case 'case 2':
+			{
+				return 'where';
+			}
+		case 'case 3':
+			return 'who';
+		default:
+			return 'default';
+	}
+
+	return 42;
+};"
 `;
 
 exports[`wraps a function in profile block 1`] = `
